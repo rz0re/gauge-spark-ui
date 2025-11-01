@@ -1,5 +1,6 @@
 import MetricCard from '@/components/MetricCard';
 import AlertCard from '@/components/AlertCard';
+import ServiceHealthCard from '@/components/ServiceHealthCard';
 
 const Index = () => {
   const handleAlertClick = (title: string) => {
@@ -80,6 +81,44 @@ const Index = () => {
               timestamp="1 hour ago"
               acknowledged={true}
               onClick={() => handleAlertClick('Scheduled maintenance window')}
+            />
+          </div>
+        </section>
+
+        {/* Service Health Section */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-foreground mb-6">
+            Service Health
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <ServiceHealthCard
+              name="PostgreSQL"
+              status="healthy"
+              uptime={99.8}
+              onClick={() => console.log('PostgreSQL clicked')}
+            />
+            
+            <ServiceHealthCard
+              name="Redis Cache"
+              status="down"
+              uptime={87.3}
+              hasIncident={true}
+              incidentDuration="2h 15m"
+              onClick={() => console.log('Redis clicked')}
+            />
+            
+            <ServiceHealthCard
+              name="API Gateway"
+              status="healthy"
+              uptime={91.2}
+              onClick={() => console.log('API Gateway clicked')}
+            />
+            
+            <ServiceHealthCard
+              name="Message Queue"
+              status="unknown"
+              uptime={0}
+              onClick={() => console.log('Message Queue clicked')}
             />
           </div>
         </section>
