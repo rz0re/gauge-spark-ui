@@ -1,6 +1,12 @@
 import MetricCard from '@/components/MetricCard';
+import AlertCard from '@/components/AlertCard';
 
 const Index = () => {
+  const handleAlertClick = (title: string) => {
+    console.log('Alert clicked:', title);
+    // Modal or detail view would open here
+  };
+
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-7xl mx-auto">
@@ -13,7 +19,12 @@ const Index = () => {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Metrics Section */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-foreground mb-6">
+            System Metrics
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <MetricCard
             title="CPU Usage"
             value={45.2}
@@ -37,9 +48,43 @@ const Index = () => {
             statusText="Immediate action required"
             icon="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
           />
-        </div>
+          </div>
+        </section>
 
-        <div className="mt-12 p-6 bg-card rounded-lg border border-border">
+        {/* Alerts Section */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-foreground mb-6">
+            Active Alerts
+          </h2>
+          <div className="space-y-4">
+            <AlertCard
+              severity="critical"
+              title="CPU usage exceeded baseline by 45%"
+              message="Detected during metric collection. Current value: 92%, baseline: 47%. This may indicate a resource-intensive process or potential performance bottleneck."
+              timestamp="5 minutes ago"
+              onClick={() => handleAlertClick('CPU usage exceeded baseline')}
+            />
+            
+            <AlertCard
+              severity="warning"
+              title="Memory utilization approaching threshold"
+              message="System memory usage has reached 72.8% which is approaching the warning threshold of 75%. Consider freeing up resources or increasing available memory."
+              timestamp="12 minutes ago"
+              onClick={() => handleAlertClick('Memory utilization approaching threshold')}
+            />
+            
+            <AlertCard
+              severity="info"
+              title="Scheduled maintenance window upcoming"
+              message="A scheduled maintenance window is planned for 2:00 AM UTC. Expected downtime: 30 minutes. All services will be temporarily unavailable."
+              timestamp="1 hour ago"
+              acknowledged={true}
+              onClick={() => handleAlertClick('Scheduled maintenance window')}
+            />
+          </div>
+        </section>
+
+        <div className="p-6 bg-card rounded-lg border border-border">
           <h2 className="text-2xl font-bold text-card-foreground mb-4">
             About These Metrics
           </h2>
