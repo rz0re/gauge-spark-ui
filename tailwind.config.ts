@@ -47,6 +47,17 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        success: "hsl(var(--success))",
+        warning: "hsl(var(--warning))",
+        critical: "hsl(var(--critical))",
+        metric: {
+          bg: "hsl(var(--metric-bg))",
+          text: "hsl(var(--metric-text))",
+          value: "hsl(var(--metric-value))",
+        },
+        progress: {
+          bg: "hsl(var(--progress-bg))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
