@@ -8,6 +8,7 @@ interface MetricCardProps {
   icon?: string;
   statusText?: string;
   variant?: 'default' | 'count';
+  onClick?: () => void;
 }
 
 const MetricCard = ({ 
@@ -17,7 +18,8 @@ const MetricCard = ({
   status,
   icon = 'M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21',
   statusText = 'Within normal range',
-  variant = 'default'
+  variant = 'default',
+  onClick
 }: MetricCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -71,7 +73,10 @@ const MetricCard = ({
   return (
     <div
       ref={cardRef}
-      className="bg-metric-bg rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+      onClick={onClick}
+      className={`bg-metric-bg rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-300 ${
+        onClick ? 'cursor-pointer' : ''
+      }`}
     >
       {variant === 'count' ? (
         // Count variant - just large number display
