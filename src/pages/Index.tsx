@@ -9,6 +9,7 @@ import SkeletonAlertCard from '@/components/SkeletonAlertCard';
 import SkeletonServiceCard from '@/components/SkeletonServiceCard';
 import EmptyStateNoAlerts from '@/components/EmptyStateNoAlerts';
 import EmptyStateNoServices from '@/components/EmptyStateNoServices';
+import MetricTrendsSection from '@/components/MetricTrendsSection';
 import { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, Settings, Bookmark } from 'lucide-react';
 
@@ -269,6 +270,9 @@ const Index = () => {
             )}
           </div>
         </section>
+
+        {/* Metric Trends Section */}
+        <MetricTrendsSection />
 
         {/* Recent Alerts Section */}
         <section className="mb-8">
