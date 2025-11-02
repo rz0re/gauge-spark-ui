@@ -2,11 +2,13 @@ import MetricCard from '@/components/MetricCard';
 import AlertCard from '@/components/AlertCard';
 import ServiceHealthCard from '@/components/ServiceHealthCard';
 import AlertModal from '@/components/AlertModal';
+import SettingsModal from '@/components/SettingsModal';
 import { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, Settings, Bookmark } from 'lucide-react';
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectedAlert, setSelectedAlert] = useState<any>(null);
   const [darkMode, setDarkMode] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -17,14 +19,18 @@ const Index = () => {
       const alpineData = {
         darkMode,
         modalOpen: isModalOpen,
+        settingsOpen: isSettingsOpen,
         selectedAlert,
         toggleDarkMode: () => {
           setDarkMode(!darkMode);
+        },
+        openSettings: () => {
+          setIsSettingsOpen(true);
         }
       };
       (rootRef.current as any)._x_dataStack = [alpineData];
     }
-  }, [darkMode, isModalOpen, selectedAlert]);
+  }, [darkMode, isModalOpen, isSettingsOpen, selectedAlert]);
 
   useEffect(() => {
     // Toggle dark class on html element
@@ -154,6 +160,7 @@ const Index = () => {
 
               {/* Settings */}
               <button
+                onClick={() => setIsSettingsOpen(true)}
                 className="p-2 text-muted-foreground hover:text-card-foreground transition-colors rounded-lg hover:bg-muted"
                 aria-label="Settings"
               >
@@ -337,6 +344,17 @@ const Index = () => {
         onClose={handleCloseModal}
         alertData={selectedAlert}
         onAcknowledge={handleAcknowledge}
+      />
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        darkMode={darkMode}
+        onToggleDarkMode={() => setDarkMode(!darkMode)}
+        onSave={(settings) => {
+          console.log('Settings saved:', settings);
+        }}
       />
     </div>
   );
