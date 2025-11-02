@@ -11,7 +11,6 @@ import EmptyStateNoAlerts from '@/components/EmptyStateNoAlerts';
 import EmptyStateNoServices from '@/components/EmptyStateNoServices';
 import { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, Settings, Bookmark } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +20,6 @@ const Index = () => {
   const [isTourOpen, setIsTourOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const rootRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate data loading
@@ -240,7 +238,6 @@ const Index = () => {
                   status="normal"
                   statusText="Within normal range"
                   icon="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21"
-                  onClick={() => navigate('/metric/cpu')}
                 />
                 
                 <MetricCard
