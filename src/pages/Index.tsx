@@ -11,7 +11,8 @@ import EmptyStateNoAlerts from '@/components/EmptyStateNoAlerts';
 import EmptyStateNoServices from '@/components/EmptyStateNoServices';
 import MetricTrendsSection from '@/components/MetricTrendsSection';
 import { useState, useEffect, useRef } from 'react';
-import { Moon, Sun, Settings, Bookmark } from 'lucide-react';
+import { Moon, Sun, Settings, Activity } from 'lucide-react';
+import spydLogo from '@/assets/spyd-logo.png';
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -131,81 +132,62 @@ const Index = () => {
 
   return (
     <div ref={rootRef} className="min-h-screen bg-background">
-      {/* Sticky Header */}
-      <header className="sticky top-0 z-30 bg-card border-b border-border shadow-sm">
+      {/* Minimalist Header */}
+      <header className="sticky top-0 z-30 bg-card/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo and Title */}
+            {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-5 h-5 text-primary-foreground"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  />
-                </svg>
+              <img 
+                src={spydLogo} 
+                alt="Spyd Logo" 
+                className="w-8 h-8 object-contain"
+              />
+              <div className="flex flex-col">
+                <span className="text-lg font-bold tracking-tight text-foreground">Spyd</span>
+                <span className="text-[10px] text-muted-foreground tracking-wider uppercase">Monitoring</span>
               </div>
-              <span className="text-lg font-semibold text-card-foreground">Spyd Dashboard</span>
             </div>
 
             {/* Center - Status Badge */}
             <div 
               data-tour="status-badge"
-              className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-success/10 border border-success/20 rounded-full"
+              className="hidden md:flex items-center gap-2 px-4 py-1.5 bg-success/10 rounded-full transition-all"
             >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
               </span>
-              <span className="text-sm font-medium text-success">Healthy</span>
+              <span className="text-xs font-medium text-success">All Systems Operational</span>
             </div>
 
-            {/* Right - Connection, Settings, Bookmark, Dark Mode */}
-            <div className="flex items-center gap-4">
+            {/* Right - Actions */}
+            <div className="flex items-center gap-2">
               {/* Connection Indicator */}
               <div 
                 data-tour="connection-indicator"
-                className="hidden sm:flex items-center gap-2"
+                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50"
               >
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
-                </span>
-                <span className="text-sm text-muted-foreground">Connected</span>
+                <Activity className="w-3.5 h-3.5 text-success" />
+                <span className="text-xs text-muted-foreground">Live</span>
               </div>
 
               {/* Dark Mode Toggle */}
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className="p-2 text-muted-foreground hover:text-card-foreground transition-colors rounded-lg hover:bg-muted"
+                className="p-2 text-muted-foreground hover:text-foreground transition-all rounded-full hover:bg-muted"
                 aria-label="Toggle dark mode"
               >
-                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
 
               {/* Settings */}
               <button
                 onClick={() => setIsSettingsOpen(true)}
-                className="p-2 text-muted-foreground hover:text-card-foreground transition-colors rounded-lg hover:bg-muted"
+                className="p-2 text-muted-foreground hover:text-foreground transition-all rounded-full hover:bg-muted"
                 aria-label="Settings"
               >
-                <Settings className="w-5 h-5" />
-              </button>
-
-              {/* Bookmark */}
-              <button
-                className="p-2 text-muted-foreground hover:text-card-foreground transition-colors rounded-lg hover:bg-muted"
-                aria-label="Bookmark"
-              >
-                <Bookmark className="w-5 h-5" />
+                <Settings className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -213,13 +195,18 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
 
         {/* Health Overview Section */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold text-foreground mb-6">
-            Health Overview
-          </h2>
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground tracking-tight">
+                Health Overview
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">Real-time system metrics</p>
+            </div>
+          </div>
           <div 
             data-tour="health-overview"
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
@@ -275,10 +262,15 @@ const Index = () => {
         <MetricTrendsSection />
 
         {/* Recent Alerts Section */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold text-foreground mb-6">
-            Recent Alerts (Past 24 Hours)
-          </h2>
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground tracking-tight">
+                Recent Alerts
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">Last 24 hours</p>
+            </div>
+          </div>
           {isLoading ? (
             <div className="space-y-4">
               <SkeletonAlertCard />
@@ -308,10 +300,15 @@ const Index = () => {
         </section>
 
         {/* Services Section */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold text-foreground mb-6">
-            Services (6 monitored)
-          </h2>
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground tracking-tight">
+                Services
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">6 services monitored</p>
+            </div>
+          </div>
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <SkeletonServiceCard />
