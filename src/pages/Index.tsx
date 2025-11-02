@@ -7,6 +7,8 @@ import OnboardingTour from '@/components/OnboardingTour';
 import SkeletonMetricCard from '@/components/SkeletonMetricCard';
 import SkeletonAlertCard from '@/components/SkeletonAlertCard';
 import SkeletonServiceCard from '@/components/SkeletonServiceCard';
+import EmptyStateNoAlerts from '@/components/EmptyStateNoAlerts';
+import EmptyStateNoServices from '@/components/EmptyStateNoServices';
 import { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, Settings, Bookmark } from 'lucide-react';
 
@@ -297,23 +299,7 @@ const Index = () => {
               ))}
             </div>
           ) : (
-            <div className="bg-metric-bg rounded-lg p-12 text-center">
-              <svg
-                className="w-16 h-16 mx-auto mb-4 text-muted-foreground"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <p className="text-muted-foreground text-lg">No alerts in the past 24 hours</p>
-            </div>
+            <EmptyStateNoAlerts />
           )}
         </section>
 
@@ -381,23 +367,7 @@ const Index = () => {
               />
             </div>
           ) : (
-            <div className="bg-metric-bg rounded-lg p-12 text-center">
-              <svg
-                className="w-16 h-16 mx-auto mb-4 text-muted-foreground"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
-                />
-              </svg>
-              <p className="text-muted-foreground text-lg">No services configured</p>
-            </div>
+            <EmptyStateNoServices />
           )}
         </section>
 
