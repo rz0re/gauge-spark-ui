@@ -3,6 +3,7 @@ import AlertCard from '@/components/AlertCard';
 import ServiceHealthCard from '@/components/ServiceHealthCard';
 import AlertModal from '@/components/AlertModal';
 import SettingsModal from '@/components/SettingsModal';
+import OnboardingTour from '@/components/OnboardingTour';
 import { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, Settings, Bookmark } from 'lucide-react';
 
@@ -11,7 +12,17 @@ const Index = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectedAlert, setSelectedAlert] = useState<any>(null);
   const [darkMode, setDarkMode] = useState(false);
+  const [isTourOpen, setIsTourOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Check if user has completed onboarding
+    const hasCompletedOnboarding = localStorage.getItem('onboarding_completed');
+    if (!hasCompletedOnboarding) {
+      // Show tour after a short delay
+      setTimeout(() => setIsTourOpen(true), 500);
+    }
+  }, []);
 
   useEffect(() => {
     // Initialize Alpine.js data on root element
@@ -130,7 +141,10 @@ const Index = () => {
             </div>
 
             {/* Center - Status Badge */}
-            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-success/10 border border-success/20 rounded-full">
+            <div 
+              data-tour="status-badge"
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-success/10 border border-success/20 rounded-full"
+            >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
@@ -141,7 +155,10 @@ const Index = () => {
             {/* Right - Connection, Settings, Bookmark, Dark Mode */}
             <div className="flex items-center gap-4">
               {/* Connection Indicator */}
-              <div className="hidden sm:flex items-center gap-2">
+              <div 
+                data-tour="connection-indicator"
+                className="hidden sm:flex items-center gap-2"
+              >
                 <span className="relative flex h-2 w-2">
                   <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
@@ -187,7 +204,10 @@ const Index = () => {
           <h2 className="text-xl font-semibold text-foreground mb-6">
             Health Overview
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div 
+            data-tour="health-overview"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
             <MetricCard
               title="CPU Usage"
               value={45}
@@ -230,7 +250,10 @@ const Index = () => {
             Recent Alerts (Past 24 Hours)
           </h2>
           {alerts.length > 0 ? (
-            <div className="space-y-4">
+            <div 
+              data-tour="recent-alerts"
+              className="space-y-4"
+            >
               {alerts.map((alert, index) => (
                 <AlertCard
                   key={index}
@@ -270,7 +293,10 @@ const Index = () => {
             Services (6 monitored)
           </h2>
           {[1, 2, 3, 4, 5, 6].length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div 
+              data-tour="services-section"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
               <ServiceHealthCard
                 name="Nginx"
                 status="healthy"
@@ -355,6 +381,12 @@ const Index = () => {
         onSave={(settings) => {
           console.log('Settings saved:', settings);
         }}
+      />
+
+      {/* Onboarding Tour */}
+      <OnboardingTour
+        isOpen={isTourOpen}
+        onClose={() => setIsTourOpen(false)}
       />
     </div>
   );
