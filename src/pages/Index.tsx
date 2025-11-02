@@ -4,6 +4,9 @@ import ServiceHealthCard from '@/components/ServiceHealthCard';
 import AlertModal from '@/components/AlertModal';
 import SettingsModal from '@/components/SettingsModal';
 import OnboardingTour from '@/components/OnboardingTour';
+import SkeletonMetricCard from '@/components/SkeletonMetricCard';
+import SkeletonAlertCard from '@/components/SkeletonAlertCard';
+import SkeletonServiceCard from '@/components/SkeletonServiceCard';
 import { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, Settings, Bookmark } from 'lucide-react';
 
@@ -13,16 +16,26 @@ const Index = () => {
   const [selectedAlert, setSelectedAlert] = useState<any>(null);
   const [darkMode, setDarkMode] = useState(false);
   const [isTourOpen, setIsTourOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Simulate data loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     // Check if user has completed onboarding
     const hasCompletedOnboarding = localStorage.getItem('onboarding_completed');
-    if (!hasCompletedOnboarding) {
-      // Show tour after a short delay
+    if (!hasCompletedOnboarding && !isLoading) {
+      // Show tour after data loads
       setTimeout(() => setIsTourOpen(true), 500);
     }
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     // Initialize Alpine.js data on root element
@@ -208,39 +221,50 @@ const Index = () => {
             data-tour="health-overview"
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
           >
-            <MetricCard
-              title="CPU Usage"
-              value={45}
-              status="normal"
-              statusText="Within normal range"
-              icon="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21"
-            />
-            
-            <MetricCard
-              title="Memory Usage"
-              value={62.5}
-              status="warning"
-              statusText="Approaching threshold"
-              icon="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"
-            />
-            
-            <MetricCard
-              title="Disk Usage"
-              value={78.2}
-              status="warning"
-              statusText="Monitor closely"
-              icon="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
-            />
+            {isLoading ? (
+              <>
+                <SkeletonMetricCard />
+                <SkeletonMetricCard />
+                <SkeletonMetricCard />
+                <SkeletonMetricCard />
+              </>
+            ) : (
+              <>
+                <MetricCard
+                  title="CPU Usage"
+                  value={45}
+                  status="normal"
+                  statusText="Within normal range"
+                  icon="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21"
+                />
+                
+                <MetricCard
+                  title="Memory Usage"
+                  value={62.5}
+                  status="warning"
+                  statusText="Approaching threshold"
+                  icon="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"
+                />
+                
+                <MetricCard
+                  title="Disk Usage"
+                  value={78.2}
+                  status="warning"
+                  statusText="Monitor closely"
+                  icon="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
+                />
 
-            <MetricCard
-              title="Active Alerts"
-              value={3}
-              unit=""
-              status="critical"
-              statusText="Requires attention"
-              icon="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-              variant="count"
-            />
+                <MetricCard
+                  title="Active Alerts"
+                  value={3}
+                  unit=""
+                  status="critical"
+                  statusText="Requires attention"
+                  icon="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+                  variant="count"
+                />
+              </>
+            )}
           </div>
         </section>
 
@@ -249,7 +273,13 @@ const Index = () => {
           <h2 className="text-xl font-semibold text-foreground mb-6">
             Recent Alerts (Past 24 Hours)
           </h2>
-          {alerts.length > 0 ? (
+          {isLoading ? (
+            <div className="space-y-4">
+              <SkeletonAlertCard />
+              <SkeletonAlertCard />
+              <SkeletonAlertCard />
+            </div>
+          ) : alerts.length > 0 ? (
             <div 
               data-tour="recent-alerts"
               className="space-y-4"
@@ -292,7 +322,16 @@ const Index = () => {
           <h2 className="text-xl font-semibold text-foreground mb-6">
             Services (6 monitored)
           </h2>
-          {[1, 2, 3, 4, 5, 6].length > 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <SkeletonServiceCard />
+              <SkeletonServiceCard />
+              <SkeletonServiceCard />
+              <SkeletonServiceCard />
+              <SkeletonServiceCard />
+              <SkeletonServiceCard />
+            </div>
+          ) : [1, 2, 3, 4, 5, 6].length > 0 ? (
             <div 
               data-tour="services-section"
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
